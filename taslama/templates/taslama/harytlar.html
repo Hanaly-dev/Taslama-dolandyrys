@@ -1,0 +1,41 @@
+{% extends 'taslama/index.html' %}
+{% load static %}
+
+{% block harytlar %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">Harytlar</h1>
+
+    <div class="row">
+        {% for enjam in page_obj %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ enjam.suraty.url }}" class="card-img-top" alt="{{ enjam.ady }}" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ enjam.ady }}</h5>
+                    <p class="card-text">{{ enjam.aksar_tasiri }}</p>
+                    <p class="text-muted"><strong>Bahasy:</strong> {{ enjam.bahasy }} TMT</p>
+                    <a href="" class="btn btn-primary">Giňişleýin..</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">Haryt tapylmady.</p>
+        {% endfor %}
+    </div>
+
+    <div class="pagination justify-content-center mt-4">
+        <span class="page-link">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="btn btn-secondary">1</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary">Öňe</a>
+            {% endif %}
+        </span>
+        <span class="page-link">
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-secondary">Yza</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-secondary"></a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

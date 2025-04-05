@@ -1,0 +1,34 @@
+{% extends 'taslama/index.html' %}
+{% load static %}
+{% block isler %}
+<!-- Latest Products -->
+<div id="products">
+    <div class="content-lg container">
+        <div class="row margin-b-40">
+            <div class="col-sm-6">
+                <h2>Taslamalar</h2>
+                <p>Ýerine ýetiren we dowam edip duran işlerimiziň sanawy we olar barada maglumatlar getirilendir</p>
+            </div>
+        </div>
+        <!--// end row -->
+
+        <div class="row">
+            {% for taslama in proyektler %}
+            <!-- Latest Products -->
+            <div class="col-sm-4 sm-margin-b-50">
+                <div class="margin-b-20">
+                    <img class="img-responsive" src="{{taslama.suraty.surat.url}}" alt="Latest Products Image">
+                </div>
+                <h4><a href="#">{{taslama.ady}}</a> <span class="text-uppercase margin-l-20"></span></h4>
+                <p>{{taslama.beyan}}</p>
+                <a class="link" href="{% url 'proyekt-detail' taslama.pk %}">Giňişleýin maglumatlar</a>
+            </div>
+            {% endfor %}
+            <!-- End Latest Products -->
+
+           
+        <!--// end row -->
+    </div>
+</div>
+<!-- End Latest Products -->
+{% endblock %}

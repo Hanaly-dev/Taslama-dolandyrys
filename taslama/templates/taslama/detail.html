@@ -1,0 +1,96 @@
+{% extends 'taslama/index.html' %}
+{% load static %}
+
+{% block detail %}
+<div class="container py-5">
+    <div class="card shadow-lg mb-4 border-0">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0" style="margin-top:20px;">
+                    <h3 class="text-dark mb-4">{{ proyekt.ady }}</h3>
+                    <table class="table table-hover table-bordered align-middle text-dark">
+                        <tbody>
+                            <tr>
+                                <th class="bg-light w-50">Status:</th>
+                                <td>{{ proyekt.get_status_display }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Görnüş:</th>
+                                <td>{{ proyekt.get_gornusi_display }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Başlanýan Senesi:</th>
+                                <td>{{ proyekt.baslanan_senesi }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Tamamlanjak Senesi:</th>
+                                <td>{{ proyekt.tamamlanjak_senesi }}</td>
+                            </tr>
+                            {% if proyekt.beyan %}
+                            <tr>
+                                <th class="bg-light">Taslama barada:</th>
+                                <td>{{ proyekt.beyan }}</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                {% if proyekt.suraty %}
+                <div class="col-lg-6 text-center mt-4">
+                    <img src="{{ proyekt.suraty.surat.url }}" alt="Proýektiň suraty"
+                         class="img-fluid rounded-4 shadow-sm"
+                         style="height: 250px; width: 400px; object-fit: cover; margin-top: 20px;">
+                    <p class="text-muted mt-2">Taslamanyň umumy suraty</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+            
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Enjamlar:</h4>
+            <ul class="list-group list-group-flush">
+                {% for enjam in proyekt.enjamlary.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ enjam.ady }}</strong><br>
+                            <small class="text-muted">Mukdary: {{ enjam.mukdary }}</small>
+                        </div>
+                        <div class="d-flex justify-content-center w-100">
+                            <span class="badge bg-success rounded-pill" style="padding: 10px 20px; text-align: center;">
+                                {{ enjam.umumy_baha }} TMT
+                            </span>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">Enjam ýok</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">Iş Hasabatlary:</h4>
+            <ul class="list-group list-group-flush">
+                {% for is_hasabat in proyekt.isler.all %}
+                    <li class="list-group-item">
+                        <strong>{{ is_hasabat.ady }}</strong>
+                        {% if is_hasabat.tamamlandy %}
+                            <span class="badge bg-primary">Tamamlandy</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Dowam edýär</span>
+                        {% endif %}
+                        <br>
+                        <small><strong>Başlanýan wagt:</strong> {{ is_hasabat.baslanys_wagty }}</small><br>
+                        <small><strong>Gutaran wagt:</strong> {{ is_hasabat.gutarany_wagty }}</small>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">Hiç bir iş hasabatlary ýok</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
