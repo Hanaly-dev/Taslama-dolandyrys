@@ -11,8 +11,49 @@ def index(request):
     return render(request, 'taslama/index.html')
 
 def proyekt_list(request):
+    gornus = request.GET.get("gornus")
+    status = request.GET.get("status")
+    
     proyektler = Taslama.objects.all()
-    return render(request, 'taslama/islerimiz.html', {'proyektler': proyektler})
+    
+    if gornus:
+        proyektler = proyektler.filter(gornusi=gornus)
+    
+    if status:
+        proyektler = proyektler.filter(status=status)
+    
+    jemi_taslama = Taslama.objects.count()
+    dowam_edyan_sany = Taslama.objects.filter(status='dowam').count()
+    tamamlanan_sany = Taslama.objects.filter(status='tamam').count()
+    meyillesdirilen_sany = Taslama.objects.filter(status='planlanan').count()
+    jemi_haryt_sany = Enjam.objects.count()
+    
+    
+    stats = [
+        {"label": "Jemi Taslama", "count": jemi_taslama},
+        {"label": "Dowam edýän işler", "count": dowam_edyan_sany},
+        {"label": "Meýilleşdirilen", "count": meyillesdirilen_sany},
+        {"label": "Tamamlanan işler", "count": tamamlanan_sany},
+        {"label": "Jemi Haryt", "count": jemi_haryt_sany}
+]
+    paginator = Paginator(proyektler, 6)
+    
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+    'proyektler': page_obj,
+    'jemi_taslama': jemi_taslama,
+    'dowam_edyan_sany': dowam_edyan_sany,
+    'tamamlanan_sany': tamamlanan_sany,
+    'meyillesdirilen_sany': meyillesdirilen_sany,  # Added this
+    'jemi_haryt_sany': jemi_haryt_sany,
+    'selected_gornus': gornus,
+    'selected_status': status,
+    'page_obj': page_obj,
+    'stats': stats,
+}
+    return render(request, 'taslama/islerimiz.html', context)
 
 def proyekt_detail(request, pk):
     proyekt = get_object_or_404(Taslama, pk=pk)
