@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.utils.translation import gettext_lazy as _
+from .forms import*
 
 def index(request):
     return render(request, 'taslama/index.html')
@@ -46,7 +47,7 @@ def proyekt_list(request):
     'jemi_taslama': jemi_taslama,
     'dowam_edyan_sany': dowam_edyan_sany,
     'tamamlanan_sany': tamamlanan_sany,
-    'meyillesdirilen_sany': meyillesdirilen_sany,  # Added this
+    'meyillesdirilen_sany': meyillesdirilen_sany, 
     'jemi_haryt_sany': jemi_haryt_sany,
     'selected_gornus': gornus,
     'selected_status': status,
@@ -54,6 +55,17 @@ def proyekt_list(request):
     'stats': stats,
 }
     return render(request, 'taslama/islerimiz.html', context)
+
+def taslama_create(request):
+    if request.method == 'POST':
+        form = TaslamaCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('proyekt-list')  
+    else:
+        form = TaslamaCreateForm()
+
+    return render(request, 'taslama/taslama_create.html', {'form': form})
 
 def proyekt_detail(request, pk):
     proyekt = get_object_or_404(Taslama, pk=pk)

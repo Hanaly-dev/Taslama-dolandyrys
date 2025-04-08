@@ -10,4 +10,5 @@ urlpatterns = [
     path('login/', loginView, name='login'),
     path('logout/',logoutView, name='logout'),
     path('register/', registerView, name='register'),
+    path('taslama/create/', taslama_create, name='taslama-create'),
 ]
